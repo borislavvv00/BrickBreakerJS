@@ -1,10 +1,10 @@
 function AutoPlay()
 {
-	if(Ball.Y < Platform.Y + 2) // hit ball with left side of platform
+	if(Ball.position[0].y < Platform.Y + 2) // hit ball with left side of platform
 	{
 		Platform.direction = "left";
 	}
-	if(Ball.Y > Platform.Y + Platform.sizeY - 2)// hit ball with rigth side of platform
+	if(Ball.position[0].y > Platform.Y + Platform.sizeY - 2)// hit ball with rigth side of platform
 	{
 		Platform.direction = "rigth";
 	}
@@ -12,59 +12,83 @@ function AutoPlay()
 
 function GetCursorPossition(event)
 {
-	cursorX = event.clientX;
-	if(cursorX >= Platform.sizeY / 2 && cursorX <= map.width - Platform.sizeY / 2)// check if the cursor if on the game map
+	if(isAutoPlayClicked == false && isGamePaused == false)
 	{
-		Platform.Y = cursorX - (Platform.sizeY / 2);
+		cursorX = event.clientX;
+		if(cursorX >= Platform.sizeY / 2 && cursorX <= map.width - Platform.sizeY / 2 - informationFieldSize && isGameOver == false)// check if the cursor if on the game map
+		{
+			Platform.Y = cursorX - (Platform.sizeY / 2);
+		}	
+		Platform.direction = "stop";//when cursor is out of game map
 	}
-	Platform.direction = "stop";//when cursor is out of game map
-	document.getElementById("score").innerHTML = "score = " + score + "				level  " + level;
 }
 
 function GetKeyboardCommands(event)
 {
-	switch(event.keyCode)
+	if(isGameOver == false)
 	{
-		case 37:
-			Platform.direction = "left";
+		switch(event.keyCode)
+		{
+			case 37:
+				Platform.direction = "left";
+				break;
+			case 39:
+				Platform.direction = "rigth";
+				break;
+		}
+	}
+}
+
+function BallDirections(i)
+{
+	switch(Ball.position[i].direction)
+	{
+		case "left":
+			Ball.position[i].y--;
 			break;
-		case 39:
-			Platform.direction = "rigth";
+		case "rigth":
+			Ball.position[i].y++;
+			break;
+		case "down":
+			Ball.position[i].x++;
+			break;
+		case "up":
+			Ball.position[i].x--;
+			break;
+		case "upLeft":
+			Ball.position[i].x--;
+			Ball.position[i].y--;
+			break;
+		case "upRigth":
+			Ball.position[i].x--;
+			Ball.position[i].y++;
+			break;
+		case "downLeft":
+			Ball.position[i].x++;
+			Ball.position[i].y--;
+			break;
+		case "downRigth":
+			Ball.position[i].x++;
+			Ball.position[i].y++;
 			break;
 	}
 }
 
-function Directions(obj) 
+function Directions(object/*direction, x, y*/) 
 {
-	switch(obj.direction)
+	switch(object.direction)
 	{
 		case "left":
-			obj.Y--;
+			object.Y--;
 			break;
 		case "rigth":
-			obj.Y++;
+			object.Y++;
 			break;
 		case "down":
-			obj.X++;
+			object.X++;
 			break;
 		case "up":
-			obj.X--;
-			break;
-		case "upLeft":
-			obj.X--;
-			obj.Y--;
-			break;
-		case "upRigth":
-			obj.X--;
-			obj.Y++;
-			break;
-		case "downLeft":
-			obj.X++;
-			obj.Y--;
-			break;
-		case "downRigth":
-			obj.X++;
-			obj.Y++;
+			object.X--;
 			break;
 	}
 }
