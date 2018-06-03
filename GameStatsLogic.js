@@ -3,6 +3,7 @@ function LevelGenerator()
 	if(Brick.position.length == 0)
 	{
 		isGameSetUP = false;
+		level++;
 	}
 }
 
