@@ -4,7 +4,7 @@ function CheckForFallingDrop(i)
 	{
 		Drop.X = Brick.position[i].x;
 		Drop.Y = Brick.position[i].y - Brick.sizeY;
-		collorIndex = 7;/*Math.round(Math.random() * 7);*/
+		collorIndex = Math.round(Math.random() * 7);
 		Drop.direction = "down";
 		isDropFalling = false;
 		isDropDrawed = true;
