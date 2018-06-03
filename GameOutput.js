@@ -1,11 +1,14 @@
-var ballStartDirection = true;
+var isGameSetUP = false;
+var isDropDrawed = false;
+var isDropFalling = true;
+var isAutoPlayClicked = false;
+var isGameOver = false;
+var isGamePaused = false;
+var collorIndex = 0;//drop color
+var level = 1;
 var score = 0;
 var cursorX = cursorY = 0;
-var drawDrop = false;
-var fallDrop = true;
-var collorIndex = 0;//index of color in the array
-var autoPlay = false;
-var level = 1;// game level
+var informationFieldSize = 205;
 
 function DrawRect(color, y, x, ySize, xSize)
 {
@@ -23,92 +26,93 @@ function DrawCircle(color, y, x, radius)
 	context.closePath();
 }
 
-function CreateBricks()
+function DrawGameStats()
+{	
+	context.font = "30px Arial";
+	context.fillStyle = "white";
+	context.fillText("score = " + score, 5, 590);
+	context.fillText("level = " + level, 200, 590);
+	context.fillText("lives = " + Platform.lives, 350, 590);
+}
+
+function DrawInformationList()
 {
-	for(var i = 0; i < Brick.count; i++)
+	var distance = 0;
+	for(var i = 0; i < Drop.color.length; i++)
 	{
-		//---------------------------first line of bricks from top to bottom--------------------
-		if(i == 0) // first brick of the line from left to rigth
-		{
-			Brick.position.push({ x : 3, y : 15 });
-		}
-		else if(i >= 1 && i <= 8) // else bricks
-		{
-			Brick.position.push({ x : 3, y : Brick.position[i - 1].y + Brick.sizeY });
-		}
-		//--------------------------second line------------------------------------------------
-		else if(i == 9)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX , y : 15 });
-		}
-		else if(i >= 10 && i <= 17)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX, y : Brick.position[i - 1].y + Brick.sizeY });
-		}
-		//--------------------------third line------------------------------------------
-		else if(i == 18)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX * 2 , y : 15 });
-		}
-		else if(i >= 19 && i <= 26)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX * 2, y : Brick.position[i - 1].y + Brick.sizeY });
-		}
-		//--------------------------fourth line------------------------------------------
-		else if(i == 27)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX * 3 , y : 15 });
-		}
-		else if(i >= 28 && i <= 35)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX * 3, y : Brick.position[i - 1].y + Brick.sizeY });
-		}
-		//----------------------------fifth line--------------------------------------------
-		else if(i == 36)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX * 4 , y : 15 });
-		}
-		else if(i >= 37 && i <= 45)
-		{
-			Brick.position.push({ x : 3 + Brick.sizeX * 4, y : Brick.position[i - 1].y + Brick.sizeY });
-		}
+		DrawRect(Drop.color[i], 510, 30 + distance, Drop.size, Drop.size);
+		distance += Drop.size + 5;
 	}
+	context.font = "20px Arial";
+	context.fillStyle = "white";
+	context.fillText("- bigger platform", 515 + Drop.size + 5, 45);
+	context.fillText("- smaller platform", 515 + Drop.size + 5, 70);
+	context.fillText("- bigger ball", 515 + Drop.size + 5, 95);
+	context.fillText("- smaller ball", 515 + Drop.size + 5, 120);
+	context.fillText("- lose 1 live", 515 + Drop.size + 5, 145);
+	context.fillText("- get 1 live", 515 + Drop.size + 5, 170);
+	context.fillText("- go to next level", 515 + Drop.size + 5, 195);
+	context.fillText("- double balls", 515 + Drop.size + 5, 220);
 }
 
 function DrawGameElements()
 {
-	if(ballStartDirection == true)// game start set ups
+	if(isGameSetUP == false)// game start set ups
 	{
-		Ball.direction = "down";
-		ballStartDirection = false;
+		Ball.position.push({ x : map.height - 200, y : map.width / 2 - 100, direction : "down" });
 		CreateBricks();
+		isGameSetUP = true;
 	}
-	//----------------------------draw elements---------------------------------------------
+//----------------------------draw elements---------------------------------------------------------
 	DrawRect("black", 0, 0, map.width, map.height);
-	DrawCircle(Ball.color, Ball.Y, Ball.X, Ball.radius);
+	
 	for(var i = 0; i < Brick.position.length; i++)
 	{
-		DrawRect(Brick.color, Brick.position[i].y, Brick.position[i].x, Brick.sizeY, Brick.sizeX);
+		DrawRect(Brick.color[Brick.position[i].colorIndex], Brick.position[i].y, Brick.position[i].x, Brick.sizeY, Brick.sizeX);
 	}
-	if(drawDrop == true)//if drop is falling
+	
+	if(isDropDrawed == true)//if drop is falling
 	{
 		DrawRect(Drop.color[collorIndex], Drop.Y, Drop.X, Drop.size, Drop.size);
 	}
+	
 	DrawRect(Platform.color, Platform.Y, Platform.X, Platform.sizeY, Platform.sizeX);
-	//--------------------------------------------------------------------------------
-	if(autoPlay == true)
-	{
-		AutoPlay();
+	DrawRect("white", 0, 550, map.width, 2);
+	DrawRect("white", 500, 0, 2, map.height - 50);
+	DrawGameStats();
+	DrawInformationList();
+	console.log(Ball.position.length);
+	for(var i = 0; i < Ball.position.length; i++)
+	{	
+		DrawCircle(Ball.color, Ball.position[i].y, Ball.position[i].x, Ball.radius);
 	}
-	//----------------------all moving elements get directions
-	Directions(Platform);
-	Directions(Ball);
-	Directions(Drop);
-	//---------------------rules for game elements touch each other
-	BallTouchPlatform();
-	BallTouchBrick();
-	BallTouchMapBorder();
-	PlatformTouchMapBorder();
-	PlatformCatchDrop();
-	DropTouchBottomBorder();
+//-----------------------------------------------------------------------------------------------------
+	if(isGamePaused == false)
+	{
+		if(isAutoPlayClicked == true)
+		{
+			AutoPlay();
+		}
+		if(isGameOver == true)
+		{
+			GameOver();
+		}
+//-------------------------------------------Game logic------------------------------------------------
+		LevelGenerator();
+		
+		Directions(Platform);
+		Directions(Drop);
+		
+		PlatformTouchMapBorder();
+		DropTouchPlatform();
+		DropTouchBottomBorder();
+		
+		for(var i = 0; i < Ball.position.length; i++)
+		{	
+			BallTouchPlatform(i);
+			BallTouchBrick(i);
+			BallTouchMapBorder(i);
+			BallDirections(i);
+		}
+	}
 }
