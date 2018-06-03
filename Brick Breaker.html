@@ -4,43 +4,23 @@
   <title> Brick Breaker </title>
 </head>
 <body>
+  <button id = "auto"> AutoPlayOff </button>
+  <button id = "restart"> restart </button>
+  <button id = "pause"> pauseOff </button>
+  
   <div onmousemove = "GetCursorPossition(event)">
-  <canvas id = "map" width = "500" height = "500"></canvas>
+  <canvas id = "map" width = "700" height = "600"></canvas>
   <p> You can move the platform with left and rigth arrows or when you put mouse over the platform </p>
   </div>
-  <button id = "auto"> AutoPlay </button>
-  <p id = "score"></p>
-  <table align = "left" border = "1">
-     <tr>
-        <td> Drop color </td>
-       <td> Drop description </td>
-     </tr>
-     <tr>
-       <td bgcolor = "red"></td>
-       <td> big platform </td>
-     </tr>
-      <tr>
-       <td bgcolor = "orange"></td>
-       <td> small platform </td>
-      </tr>
-      <tr>
-       <td bgcolor = "purple"></td>
-        <td> big ball </td>
-      </tr>
-      <tr>
-       <td bgcolor = "sienna"></td>
-        <td> small ball </td>
-     </tr>
-  </table>
+  
   <script src = "ObjectHitMapBorders.js"></script>
   <script src = "BallHitBrick.js"></script>
+  <script src = "ObjectTouchPlatform.js"></script>
+  <script src = "CreateBricks.js"></script>
   <script src = "GameOutput.js"></script>
+  <script src = "GameStatsLogic.js"></script>
   <script src = "GameMovement.js"></script>
-  <script src = "DropsFunctions.js"></script>
-  <script src = "ClassDrops.js"></script>
-  <script src = "ClassBrick.js"></script>
-  <script src = "ClassPlatform.js"></script>
-  <script src = "ClassBall.js"></script>
+  <script src = "GameObjects.js"></script>
   <script src = "Source.js"></script>
 </body>
 </html>
