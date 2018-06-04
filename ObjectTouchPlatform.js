@@ -54,7 +54,6 @@ function DropTouchPlatform()//drop touch platform
 				Platform.lives++;
 				break;
 			case "yellow"://go to next level
-				level++;
 				DestroyCurrentObjects();
 				break;
 			case "dimgray"://go to next level
