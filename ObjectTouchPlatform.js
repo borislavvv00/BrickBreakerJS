@@ -17,7 +17,7 @@ function BallTouchPlatform(i)
 	}
 }
 
-function DropTouchPlatform()//drop touch platform
+function DropTouchPlatform()
 {
 	if(Platform.X == Drop.X && Platform.Y <= Drop.Y && Platform.Y + Platform.sizeY >= Drop.Y)
 	{
@@ -56,7 +56,7 @@ function DropTouchPlatform()//drop touch platform
 			case "yellow"://go to next level
 				DestroyCurrentObjects();
 				break;
-			case "dimgray"://go to next level
+			case "dimgray"://double balls
 				DoubleBalls();
 				break;
 		}
