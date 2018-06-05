@@ -74,7 +74,7 @@ function BallDirections(i)
 	}
 }
 
-function Directions(object/*direction, x, y*/) 
+function Directions(object) 
 {
 	switch(object.direction)
 	{
