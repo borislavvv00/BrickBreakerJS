@@ -15,11 +15,13 @@ function GetCursorPossition(event)
 	if(isAutoPlayClicked == false && isGamePaused == false)
 	{
 		cursorX = event.clientX;
+		cursorY = event.clientY;
 		if(cursorX >= Platform.sizeY / 2 && cursorX <= map.width - Platform.sizeY / 2 - informationFieldSize && isGameOver == false)// check if the cursor if on the game map
 		{
 			Platform.Y = cursorX - (Platform.sizeY / 2);
 		}	
 		Platform.direction = "stop";//when cursor is out of game map
+		MouseOver(cursorX, cursorY);
 	}
 }
 
@@ -74,7 +76,7 @@ function BallDirections(i)
 	}
 }
 
-function Directions(object) 
+function Directions(object/*direction, x, y*/) 
 {
 	switch(object.direction)
 	{
