@@ -55,7 +55,5 @@
 		}
 		pauseClickCount++;
 	}
-//---------------------------------------------------------------------------------------	
-	setInterval(DrawGameElements, 1);
 }
 )(window, document);
