@@ -8,10 +8,12 @@
   <button id = "restart"> restart </button>
   <button id = "pause"> pauseOff </button>
   
-  <div onmousemove = "GetCursorPossition(event)">
+  <div onmousemove = "GetCursorPossition(event)" onclick = "MenuOptionsClick()">
   <canvas id = "map" width = "700" height = "600"></canvas>
-  <p> You can move the platform with left and rigth arrows or when you put mouse over the platform </p>
   </div>
+  
+  <img id="ad" src="Images\ad.jpg" width="0" height="0">
+  <img id="mouseMove" src="Images\MouseMove.png" width="0" height="0">
   
   <script src = "ObjectHitMapBorders.js"></script>
   <script src = "BallHitBrick.js"></script>
@@ -21,6 +23,7 @@
   <script src = "GameStatsLogic.js"></script>
   <script src = "GameMovement.js"></script>
   <script src = "GameObjects.js"></script>
+  <script src = "GameMenu.js"></script>
   <script src = "Source.js"></script>
 </body>
 </html>
